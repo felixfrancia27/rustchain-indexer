@@ -1,5 +1,5 @@
 # Usar imagen oficial de Rust para compilación
-FROM rust:1.82-slim as builder
+FROM rust:latest as builder
 
 WORKDIR /app
 
