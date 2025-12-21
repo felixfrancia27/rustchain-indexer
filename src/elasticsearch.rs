@@ -165,7 +165,7 @@ impl ElasticsearchClient {
         for block in blocks {
             ops.push(
                 BulkOperation::index(block.clone())
-                    .id(&block.number.to_string())
+                    .id(block.number.to_string())
                     .into(),
             );
         }

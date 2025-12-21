@@ -3,9 +3,11 @@ use thiserror::Error;
 #[derive(Error, Debug)]
 pub enum IndexerError {
     #[error("Elasticsearch error: {0}")]
+    #[allow(dead_code)]
     Elasticsearch(String),
 
     #[error("RPC error: {0}")]
+    #[allow(dead_code)]
     Rpc(String),
 
     #[error("Serialization error: {0}")]
