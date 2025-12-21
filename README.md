@@ -88,6 +88,26 @@ cargo clippy
 cargo test && cargo clippy && cargo fmt -- --check
 ```
 
+## Deployment en Railway
+
+Para desplegar el indexer en Railway y que corra continuamente:
+
+1. **Crea un proyecto en Railway**
+   - Ve a [railway.app](https://railway.app) y crea un nuevo proyecto
+   - Conecta tu repositorio de GitHub
+
+2. **Configura las Variables de Entorno**
+   - En el dashboard de Railway, ve a la pestaña "Variables"
+   - Agrega todas las variables del archivo `railway.env.example`
+   - **IMPORTANTE**: No incluyas comillas en los valores
+
+3. **Despliega**
+   - Railway detectará automáticamente el proyecto Rust
+   - El build y deploy se ejecutarán automáticamente
+   - El indexer correrá continuamente en modo sync
+
+Para más detalles, consulta [RAILWAY_SETUP.md](RAILWAY_SETUP.md)
+
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

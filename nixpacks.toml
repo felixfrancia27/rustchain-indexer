@@ -5,5 +5,5 @@ nixPkgs = ["rust"]
 cmds = ["cargo build --release"]
 
 [start]
-cmd = "cargo run --release"
+cmd = "./target/release/blockchain-indexer"
 
