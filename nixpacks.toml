@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ["rust"]
+
+[phases.build]
+cmds = ["cargo build --release"]
+
+[start]
+cmd = "cargo run --release"
+

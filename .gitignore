@@ -1,0 +1,18 @@
+# Rust
+target/
+# Note: Cargo.lock is included for binaries, excluded for libraries
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
