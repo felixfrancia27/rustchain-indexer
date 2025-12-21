@@ -1,0 +1,39 @@
+# Rust build artifacts
+target/
+**/*.rs.bk
+
+# Documentation
+*.md
+doc/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+*.env
+
+# Nixpacks (shouldn't be needed but just in case)
+.nixpacks/
+nixpacks.toml
+
+# Test files
+**/*_test.rs
+**/test_*.rs
+
+# Other
+*.log
+*.tmp
+
