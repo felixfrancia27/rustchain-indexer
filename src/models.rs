@@ -207,13 +207,16 @@ mod tests {
         let block = IndexedBlock {
             number: u64::MAX,
             hash: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff".to_string(),
-            parent_hash: "0x0000000000000000000000000000000000000000000000000000000000000000".to_string(),
+            parent_hash: "0x0000000000000000000000000000000000000000000000000000000000000000"
+                .to_string(),
             timestamp: u64::MAX,
             gas_limit: u64::MAX,
             gas_used: u64::MAX,
             miner: Some("0x0000000000000000000000000000000000000000".to_string()),
-            difficulty: "999999999999999999999999999999999999999999999999999999999999999999999".to_string(),
-            total_difficulty: "999999999999999999999999999999999999999999999999999999999999999999999".to_string(),
+            difficulty: "999999999999999999999999999999999999999999999999999999999999999999999"
+                .to_string(),
+            total_difficulty:
+                "999999999999999999999999999999999999999999999999999999999999999999999".to_string(),
             size: u64::MAX,
             transactions: vec![],
             transaction_count: 0,
@@ -236,9 +239,11 @@ mod tests {
             hash: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff".to_string(),
             from: "0x0000000000000000000000000000000000000000".to_string(),
             to: Some("0xffffffffffffffffffffffffffffffffffffffff".to_string()),
-            value: "999999999999999999999999999999999999999999999999999999999999999999999".to_string(),
+            value: "999999999999999999999999999999999999999999999999999999999999999999999"
+                .to_string(),
             gas: u64::MAX,
-            gas_price: "999999999999999999999999999999999999999999999999999999999999999999999".to_string(),
+            gas_price: "999999999999999999999999999999999999999999999999999999999999999999999"
+                .to_string(),
             input: "0x".to_string().repeat(1000), // Very long input
             nonce: u64::MAX,
             transaction_index: Some(u64::MAX),
@@ -266,19 +271,17 @@ mod tests {
             difficulty: "1234567890".to_string(),
             total_difficulty: "9876543210".to_string(),
             size: 25000,
-            transactions: vec![
-                IndexedTransaction {
-                    hash: "0xtx1".to_string(),
-                    from: "0xfrom1".to_string(),
-                    to: Some("0xto1".to_string()),
-                    value: "1000000000000000000".to_string(),
-                    gas: 21000,
-                    gas_price: "20000000000".to_string(),
-                    input: "0x123456".to_string(),
-                    nonce: 5,
-                    transaction_index: Some(0),
-                },
-            ],
+            transactions: vec![IndexedTransaction {
+                hash: "0xtx1".to_string(),
+                from: "0xfrom1".to_string(),
+                to: Some("0xto1".to_string()),
+                value: "1000000000000000000".to_string(),
+                gas: 21000,
+                gas_price: "20000000000".to_string(),
+                input: "0x123456".to_string(),
+                nonce: 5,
+                transaction_index: Some(0),
+            }],
             transaction_count: 1,
             uncles: 2,
             indexed_at: 1609459200,
@@ -286,7 +289,7 @@ mod tests {
 
         // Serialize
         let json = serde_json::to_string(&block).unwrap();
-        
+
         // Deserialize
         let deserialized: IndexedBlock = serde_json::from_str(&json).unwrap();
 
@@ -364,7 +367,13 @@ mod tests {
 
         assert_eq!(block.transactions.len(), 100);
         assert_eq!(block.transaction_count, 100);
-        assert_eq!(block.transactions[0].hash, "0x0000000000000000000000000000000000000000000000000000000000000000");
-        assert_eq!(block.transactions[99].hash, "0x0000000000000000000000000000000000000000000000000000000000000063");
+        assert_eq!(
+            block.transactions[0].hash,
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+        );
+        assert_eq!(
+            block.transactions[99].hash,
+            "0x0000000000000000000000000000000000000000000000000000000000000063"
+        );
     }
 }
