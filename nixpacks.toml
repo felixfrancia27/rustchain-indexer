@@ -7,3 +7,6 @@ cmds = ["cargo build --release"]
 [start]
 cmd = "./target/release/blockchain-indexer"
 
+[variables]
+NIXPKGS_VERSION = "nixpkgs-23.11"
+
