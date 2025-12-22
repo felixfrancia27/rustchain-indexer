@@ -4,7 +4,7 @@ use crate::models::IndexedBlock;
 use anyhow::Result;
 use elasticsearch::{
     http::transport::Transport,
-    indices::{IndicesCreateParts, IndicesExistsParts},
+    indices::{IndicesCreateParts, IndicesExistsParts, IndicesRefreshParts},
     BulkOperation, BulkParts, Elasticsearch, GetParts, IndexParts,
 };
 use serde_json::{json, Value};
@@ -213,6 +213,15 @@ impl ElasticsearchClient {
             .await?;
 
         log::debug!("Checkpoint saved to Elasticsearch: block {}", block_number);
+        Ok(())
+    }
+
+    pub async fn refresh_blocks_index(&self) -> Result<()> {
+        self.client
+            .indices()
+            .refresh(IndicesRefreshParts::Index(&[&self.blocks_index]))
+            .send()
+            .await?;
         Ok(())
     }
 }

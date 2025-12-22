@@ -189,17 +189,31 @@ impl BlockIndexer {
                 current_block
             );
 
+            let mut indexed_count = 0;
             for block_num in (last_indexed + 1)..=current_block {
                 match self.index_block(block_num).await {
                     Ok(_) => {
+                        indexed_count += 1;
                         self.es_client.set_checkpoint(block_num).await?;
                         debug!("Indexed block {} and saved checkpoint", block_num);
+                        
+                        // Refresh every 10 blocks or at the end to make blocks visible immediately
+                        if indexed_count % 10 == 0 || block_num == current_block {
+                            if let Err(e) = self.es_client.refresh_blocks_index().await {
+                                warn!("Failed to refresh blocks index: {}", e);
+                            }
+                        }
                     }
                     Err(e) => {
                         error!("Error indexing block {}: {}", block_num, e);
                         // Continue with next block
                     }
                 }
+            }
+
+            // Final refresh to ensure all blocks are visible
+            if let Err(e) = self.es_client.refresh_blocks_index().await {
+                warn!("Failed to refresh blocks index after sync: {}", e);
             }
 
             info!("Live sync completed: now at block {}", current_block);
