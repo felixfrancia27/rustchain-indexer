@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use ethers::middleware::Middleware;
 use ethers::providers::{Http, Provider};
-use ethers::types::{Block, H256, Transaction, U256};
+use ethers::types::{Block, Transaction, U256};
 use futures::stream::{self, StreamExt};
 use log::{debug, error, info, warn};
 use std::sync::Arc;
@@ -309,17 +309,17 @@ impl BlockIndexer {
             .iter()
             .enumerate()
             .map(|(idx, tx)| IndexedTransaction {
-                hash: format!("{:?}", tx.hash()),
-                from: format!("{:?}", tx.from()),
-                to: tx.to().map(|a| format!("{:?}", a)),
-                value: tx.value().to_string(),
-                gas: tx.gas().as_u64(),
+                hash: format!("{:?}", tx.hash),
+                from: format!("{:?}", tx.from),
+                to: tx.to.map(|a| format!("{:?}", a)),
+                value: tx.value.to_string(),
+                gas: tx.gas.as_u64(),
                 gas_price: tx
-                    .gas_price()
+                    .gas_price
                     .map(|p: U256| p.to_string())
                     .unwrap_or_else(|| "0".to_string()),
-                input: hex::encode(tx.input()),
-                nonce: tx.nonce().as_u64(),
+                input: hex::encode(tx.input.as_ref()),
+                nonce: tx.nonce.as_u64(),
                 transaction_index: Some(idx as u64),
             })
             .collect();
@@ -343,17 +343,17 @@ impl BlockIndexer {
             .iter()
             .enumerate()
             .map(|(idx, tx)| IndexedTransaction {
-                hash: format!("{:?}", tx.hash()),
-                from: format!("{:?}", tx.from()),
-                to: tx.to().map(|a| format!("{:?}", a)),
-                value: tx.value().to_string(),
-                gas: tx.gas().as_u64(),
+                hash: format!("{:?}", tx.hash),
+                from: format!("{:?}", tx.from),
+                to: tx.to.map(|a| format!("{:?}", a)),
+                value: tx.value.to_string(),
+                gas: tx.gas.as_u64(),
                 gas_price: tx
-                    .gas_price()
+                    .gas_price
                     .map(|p: U256| p.to_string())
                     .unwrap_or_else(|| "0".to_string()),
-                input: hex::encode(tx.input()),
-                nonce: tx.nonce().as_u64(),
+                input: hex::encode(tx.input.as_ref()),
+                nonce: tx.nonce.as_u64(),
                 transaction_index: Some(idx as u64),
             })
             .collect();
@@ -362,36 +362,6 @@ impl BlockIndexer {
         self.es_client.index_block(&indexed_block).await?;
 
         Ok(())
-    }
-
-    async fn convert_block(
-        block: Block<H256>,
-        transactions: Vec<IndexedTransaction>,
-    ) -> Result<IndexedBlock> {
-        let indexed_at = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_secs();
-
-        Ok(IndexedBlock {
-            number: block.number.unwrap().as_u64(),
-            hash: format!("{:?}", block.hash.unwrap()),
-            parent_hash: format!("{:?}", block.parent_hash),
-            timestamp: block.timestamp.as_u64(),
-            gas_limit: block.gas_limit.as_u64(),
-            gas_used: block.gas_used.as_u64(),
-            miner: block.author.map(|a| format!("{:?}", a)),
-            difficulty: block.difficulty.to_string(),
-            total_difficulty: block
-                .total_difficulty
-                .map(|d| d.to_string())
-                .unwrap_or_else(|| "0".to_string()),
-            size: block.size.map(|s| s.as_u64()).unwrap_or(0),
-            transaction_count: transactions.len(),
-            transactions,
-            uncles: block.uncles.len(),
-            indexed_at,
-        })
     }
 
     async fn convert_block_from_full(
